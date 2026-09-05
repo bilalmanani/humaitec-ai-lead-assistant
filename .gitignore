@@ -3,4 +3,5 @@ __pycache__/
 .env
 *.pyc
 chroma_db/
-data/chroma_db/.agents/
+data/chroma_db/
+.agents/
