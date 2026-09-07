@@ -11,7 +11,7 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parents[2]
 CHROMA_DB_DIR = BASE_DIR / "data" / "chroma_db"
 
-question = "What is HUMAITEC's exact office rent?"
+question = input("\nEnter client question: ").strip()
 
 embeddings = HuggingFaceEmbeddings(
     model_name="sentence-transformers/all-MiniLM-L6-v2"
