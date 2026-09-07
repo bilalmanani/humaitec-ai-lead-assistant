@@ -77,25 +77,26 @@ Client's New Message:
     return answer, results
 
 
-history = []
+if __name__ == "__main__":
+    history = []
 
-print("HUMAITEC AI Assistant started.")
-print("Type 'exit' to close the chat.")
+    print("HUMAITEC AI Assistant started.")
+    print("Type 'exit' to close the chat.")
 
-while True:
-    question = input("\nClient: ").strip()
+    while True:
+        question = input("\nClient: ").strip()
 
-    if question.lower() == "exit":
-        print("Chat closed.")
-        break
+        if question.lower() == "exit":
+            print("Chat closed.")
+            break
 
-    if not question:
-        continue
+        if not question:
+            continue
 
-    answer, results = ask_assistant(question, history)
+        answer, results = ask_assistant(question, history)
 
-    print("\nAssistant:", answer)
-    print("\nSources:")
+        print("\nAssistant:", answer)
+        print("\nSources:")
 
-    for document in results:
-        print("-", document.metadata["source"])
+        for document in results:
+            print("-", document.metadata["source"])

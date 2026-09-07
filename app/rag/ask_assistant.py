@@ -11,26 +11,27 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parents[2]
 CHROMA_DB_DIR = BASE_DIR / "data" / "chroma_db"
 
-question = input("\nEnter client question: ").strip()
+if __name__ == "__main__":
+    question = input("\nEnter client question: ").strip()
 
-embeddings = HuggingFaceEmbeddings(
-    model_name="sentence-transformers/all-MiniLM-L6-v2"
-)
+    embeddings = HuggingFaceEmbeddings(
+        model_name="sentence-transformers/all-MiniLM-L6-v2"
+    )
 
-databasa=Chroma(
-    persist_directory=str(CHROMA_DB_DIR),
-    embedding_function=embeddings,
-    collection_name="humaitec_knowledge"
-)
+    databasa=Chroma(
+        persist_directory=str(CHROMA_DB_DIR),
+        embedding_function=embeddings,
+        collection_name="humaitec_knowledge"
+    )
 
-results=databasa.similarity_search(question,k=3)
+    results=databasa.similarity_search(question,k=3)
 
 
-context = "\n\n".join(
-    document.page_content for document in results
-)
+    context = "\n\n".join(
+        document.page_content for document in results
+    )
 
-prompt = f"""
+    prompt = f"""
 You are the HUMAITEC AI Lead Assistant.
 
 Answer the client's question using ONLY the HUMAITEC context below.
@@ -49,21 +50,21 @@ Client Question:
 {question}
 """
 
-client = genai.Client(
-    api_key=os.getenv("GEMINI_API_KEY")
-)
+    client = genai.Client(
+        api_key=os.getenv("GEMINI_API_KEY")
+    )
 
-response = client.interactions.create(
-    model="gemini-3.8-flash",
-    input=prompt,
-)
+    response = client.interactions.create(
+        model="gemini-3.8-flash",
+        input=prompt,
+    )
 
-print("\nClient Question:")
-print(question)
+    print("\nClient Question:")
+    print(question)
 
-print("\nAssistant Answer:")
-print(response.output_text)
+    print("\nAssistant Answer:")
+    print(response.output_text)
 
-print("\nSources Used:")
-for document in results:
-    print("-", document.metadata["source"])
+    print("\nSources Used:")
+    for document in results:
+        print("-", document.metadata["source"])
