@@ -59,12 +59,17 @@ Client's New Message:
 {question}
 """
 
-    response = client.interactions.create(
-        model="gemini-3.8-flash",
-        input=prompt,
-    )
-
-    answer = response.output_text
+    try:
+        response = client.models.generate_content(
+            model="gemini-3.5-flash-lite",
+            contents=prompt,
+        )
+        answer = response.text
+    except Exception:
+        return (
+            "Gemini is temporarily rate-limited. Please wait one minute and try again.",
+            [],
+        )
 
     history.append(f"Client: {question}")
     history.append(f"Assistant: {answer}")
@@ -91,5 +96,6 @@ while True:
 
     print("\nAssistant:", answer)
     print("\nSources:")
+
     for document in results:
         print("-", document.metadata["source"])
